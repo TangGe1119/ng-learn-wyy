@@ -1,5 +1,9 @@
 <div class="home">
-  <app-wy-carousel #wyCarousel [activeIndex]="carouselActiveIndex" (changeSlide)="changeSlide($event)">
+  <app-wy-carousel
+    #wyCarousel
+    [activeIndex]="carouselActiveIndex"
+    (changeSlide)="changeSlide($event)"
+  >
     <nz-carousel
       nzAutoPlay
       nzEffect="fade"
@@ -17,4 +21,51 @@
       </div>
     </nz-carousel>
   </app-wy-carousel>
+
+  <div class="main">
+    <div class="wrap">
+      <div class="left">
+        <div class="sec">
+          <div class="up">
+            <div class="navs">
+              <h2><i></i> <a href="">热门推荐</a></h2>
+              <nav>
+                <a href="" *ngFor="let tag of tags">{{ tag.name }}</a>
+              </nav>
+              <a href="">
+                更多
+                <i nz-icon nzType="arrow-right" nzTheme="outline"> </i>
+              </a>
+            </div>
+          </div>
+          <div class="down">
+            <div class="down-wrap">
+              <app-single-sheet
+                *ngFor="let item of sheets"
+                class="sheet-item"
+                [sheet]="item"
+              ></app-single-sheet>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right">
+        <app-member-card></app-member-card>
+        <div class="settled-singer">
+          <div class="tit">
+            <b>入驻歌手</b>
+          </div>
+          <div class="list">
+            <div class="card" *ngFor="let singer of singers">
+              <img class="pic" [src]="singer.picUrl" />
+              <div class="txt">
+                <b class="ellipsis">{{ singer.name }}</b>
+                <span>专辑：{{ singer.albumSize }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
