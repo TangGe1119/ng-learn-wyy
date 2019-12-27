@@ -44,6 +44,7 @@
                 *ngFor="let item of sheets"
                 class="sheet-item"
                 [sheet]="item"
+                (onPlay)="onPlaySheet($event)"
               ></app-single-sheet>
             </div>
           </div>

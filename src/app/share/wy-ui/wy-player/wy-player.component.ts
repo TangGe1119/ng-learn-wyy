@@ -8,5 +8,7 @@ import { Component, OnInit } from "@angular/core";
 export class WyPlayerComponent implements OnInit {
   constructor() {}
 
+  sliderValue = 35;
+
   ngOnInit() {}
 }
