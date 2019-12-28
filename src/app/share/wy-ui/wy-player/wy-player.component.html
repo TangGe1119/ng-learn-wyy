@@ -6,33 +6,36 @@
   <div class="container">
     <div class="wrap">
       <div class="btns">
-        <i class="prev"></i>
-        <i class="toggle"></i>
-        <i class="next"></i>
+        <i class="prev" (click)="onSongChange(-1)"></i>
+        <i [class.playing]="playing" (click)="onToggle()" class="toggle"></i>
+        <i class="next" (click)="onSongChange(1)"></i>
       </div>
       <div class="head">
-        <img
-          src="http://s4.music.126.net/style/web2/img/default/default_album.jpg"
-        />
+        <img [src]="picUrl" />
         <i class="mask"></i>
       </div>
       <div class="play">
-        <div class="words clearfix hide">
-          <p class="ellipsis margin-bottom-none">歌名</p>
+        <div class="words clearfix">
+          <p class="ellipsis margin-bottom-none">{{ currentSong?.name }}</p>
           <ul class="songs clearfix margin-bottom-none">
-            <li>
-              <a href="">歌手1</a>
-            </li>
-            <li>
-              <a href="">歌手1</a>
+            <li *ngFor="let a of currentSong?.ar; last as isLast">
+              <a>{{ a.name }}</a>
+              <span [hidden]="isLast">/</span>
             </li>
           </ul>
         </div>
         <div class="bar">
           <div class="slider-wrap">
-            <app-wy-slider [(ngModel)]="sliderValue"></app-wy-slider>
+            <app-wy-slider
+              [(ngModel)]="sliderValue"
+              (ngModelChange)="onSliderPercentChange($event)"
+              [wyBufferOffset]="buffer"
+            ></app-wy-slider>
           </div>
-          <span class="time"><em>02:11</em> / {{ sliderValue }}</span>
+          <span class="time"
+            ><em>{{ currentTime | playTime }}</em> /
+            {{ currentSong?.dt | playTime }}</span
+          >
         </div>
       </div>
       <div class="oper">
@@ -40,10 +43,34 @@
         <i class="share" title="分享"></i>
       </div>
       <div class="ctrl">
-        <i class="volume" title="音量"></i>
-        <i class="loop" title="循环"></i>
+        <i
+          class="volume"
+          title="音量"
+          (click)="toggleVolumeVisible($event)"
+        ></i>
+        <i
+          [ngClass]="playMode.type"
+          [title]="playMode.name"
+          (click)="changeMode()"
+        ></i>
         <p class="open"><span></span></p>
+        <div class="control-vol" [hidden]="!volumeVisible" #volCtl>
+          <app-wy-slider
+            [(ngModel)]="volume"
+            [wyVertical]="true"
+          ></app-wy-slider>
+        </div>
       </div>
     </div>
   </div>
+
+  <audio
+    [src]="currentSong?.url"
+    [volume]="playVolume"
+    (canplay)="onCanPlay()"
+    (timeupdate)="onTimeUpdate($event)"
+    (progress)="onProgress()"
+    (ended)="onEnd()"
+    #audio
+  ></audio>
 </div>

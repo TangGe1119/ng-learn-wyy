@@ -47,6 +47,7 @@ export class WySliderComponent
   @Input() wyVertical = false;
   @Input() wyMin = 0;
   @Input() wyMax = 100;
+  @Input() wyBufferOffset = 0;
 
   dragStart$: Observable<number>;
   dragMove$: Observable<number>;
@@ -108,8 +109,8 @@ export class WySliderComponent
     const win = this.sliderDom.ownerDocument!.defaultView;
 
     const sliderStart = this.wyVertical
-      ? rect.top + win.pageYOffset
-      : rect.left + win.pageXOffset;
+      ? rect.top + win.scrollY
+      : rect.left + win.scrollX;
 
     const ratio = (pos - sliderStart) / sliderLengh;
     const ratioTrue = Math.max(
@@ -193,5 +194,5 @@ export class WySliderComponent
     this.onValueChange = fn;
   }
 
-  registerOnTouched(fn: () => void) {}
+  registerOnTouched() {}
 }

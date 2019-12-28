@@ -26,6 +26,7 @@ export type Song = {
     name: string;
     picUrl: string;
   };
+  // 总时长
   dt: number;
 };
 
@@ -39,6 +40,6 @@ export type SongSheet = {
 };
 
 export type SongUrl = {
-  id: number
-  url: string
+  id: number;
+  url: string;
 };

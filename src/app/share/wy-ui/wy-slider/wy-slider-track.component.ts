@@ -10,13 +10,18 @@ import {
 @Component({
   selector: "app-wy-slider-track",
   template: `
-    <div class="wy-slider-track" [ngStyle]="style"></div>
+    <div
+      class="wy-slider-track"
+      [ngStyle]="style"
+      [class.buffer]="wyBuffer"
+    ></div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WyTrackComponent implements OnInit, OnChanges {
   @Input() wyVertical = false;
   @Input() wyOffset: number;
+  @Input() wyBuffer = false;
 
   style = {};
 
