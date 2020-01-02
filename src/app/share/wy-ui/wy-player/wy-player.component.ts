@@ -42,14 +42,15 @@ export class WyPlayerComponent implements OnInit, OnDestroy {
   currentTime: number;
   playing = false;
   volumeVisible = false;
+  panelVisible = false;
 
   winSubscription: Subscription;
 
   @ViewChild("audio", { static: true })
   private audio: ElementRef<HTMLAudioElement>;
 
-  @ViewChild("volCtl", { static: true })
-  private volCtl: ElementRef<HTMLDivElement>;
+  @ViewChild("player", { static: true })
+  private playerCtl: ElementRef<HTMLDivElement>;
 
   constructor(
     private store$: Store<AppStoreModule>,
@@ -77,8 +78,8 @@ export class WyPlayerComponent implements OnInit, OnDestroy {
     this.winSubscription = fromEvent(this.doc, "click").subscribe(
       (e: MouseEvent) => {
         e.stopPropagation();
-        if (!this.volumeVisible) return;
-        if (!this.volCtl.nativeElement.contains(e.target as HTMLElement)) {
+        if (!this.playerCtl.nativeElement.contains(e.target as HTMLElement)) {
+          this.panelVisible = false;
           this.volumeVisible = false;
         }
       }
@@ -142,6 +143,15 @@ export class WyPlayerComponent implements OnInit, OnDestroy {
     this.volumeVisible = !this.volumeVisible;
   }
 
+  togglePanelVisible(e: Event) {
+    e.stopPropagation();
+    this.panelVisible = !this.panelVisible;
+  }
+
+  onPanelClose() {
+    this.panelVisible = false;
+  }
+
   changeMode() {
     let playMode: PlayMode;
     let playList: Song[];
@@ -162,6 +172,10 @@ export class WyPlayerComponent implements OnInit, OnDestroy {
     this.store$.dispatch(SetPlayMode({ playMode }));
     this.store$.dispatch(SetPlayList({ playList }));
     this.store$.dispatch(SetCurrentIndex({ currentIndex: 0 }));
+  }
+
+  onChangeSong(song: number) {
+    this.onSongChange(song);
   }
 
   private play() {
